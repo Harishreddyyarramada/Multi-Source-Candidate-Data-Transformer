@@ -1,0 +1,83 @@
+import express from "express";
+import { execFile } from "node:child_process";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const projectRoot = path.resolve(__dirname, "..");
+const transformerDir = path.join(projectRoot, "transformer");
+const app = express();
+
+app.use(express.json({ limit: "2mb" }));
+
+app.get("/api/sample", async (_request, response) => {
+  try {
+    const [csv, usernames, config] = await Promise.all([
+      readFile(path.join(transformerDir, "sample_inputs", "candidates.csv"), "utf8"),
+      readFile(path.join(transformerDir, "sample_inputs", "github_usernames.txt"), "utf8"),
+      readFile(path.join(transformerDir, "config.json"), "utf8")
+    ]);
+    response.json({ csv, usernames, config: JSON.parse(config) });
+  } catch (error) {
+    response.status(500).json({ error: error.message });
+  }
+});
+
+app.post("/api/run", async (request, response) => {
+  try {
+    const { csv, usernames, config } = request.body;
+    if (typeof csv !== "string" || typeof usernames !== "string") {
+      return response.status(400).json({ error: "CSV and GitHub usernames must be text." });
+    }
+
+    const parsedConfig = typeof config === "string" ? JSON.parse(config) : config;
+    const runtimeDir = path.join(transformerDir, "output", "ui_runtime");
+    await mkdir(runtimeDir, { recursive: true });
+
+    const csvPath = path.join(runtimeDir, "candidates.csv");
+    const usernamesPath = path.join(runtimeDir, "github_usernames.txt");
+    const configPath = path.join(runtimeDir, "config.json");
+    const outputPath = path.join(runtimeDir, "output.json");
+
+    await Promise.all([
+      writeFile(csvPath, csv, "utf8"),
+      writeFile(usernamesPath, usernames, "utf8"),
+      writeFile(configPath, JSON.stringify(parsedConfig, null, 2), "utf8")
+    ]);
+
+    const result = await runPython([
+      "-m",
+      "transformer.main",
+      "--csv",
+      csvPath,
+      "--github-usernames",
+      usernamesPath,
+      "--config",
+      configPath,
+      "--output",
+      outputPath
+    ]);
+    const output = JSON.parse(await readFile(outputPath, "utf8"));
+    response.json({ output, logs: result.stderr || result.stdout || "Pipeline completed." });
+  } catch (error) {
+    response.status(500).json({ error: error.message });
+  }
+});
+
+function runPython(args) {
+  return new Promise((resolve, reject) => {
+    execFile("python", args, { cwd: projectRoot, windowsHide: true, timeout: 45000 }, (error, stdout, stderr) => {
+      if (error) {
+        reject(new Error(stderr || stdout || error.message));
+        return;
+      }
+      resolve({ stdout, stderr });
+    });
+  });
+}
+
+app.listen(5174, "127.0.0.1", () => {
+  console.log("API server running at http://127.0.0.1:5174");
+});
