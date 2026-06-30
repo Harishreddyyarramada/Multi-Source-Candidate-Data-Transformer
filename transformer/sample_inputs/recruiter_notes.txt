@@ -1,0 +1,12 @@
+Asha Rao is based in Bengaluru, India.
+Email: asha@example.com
+Phone: +91 98765 43210
+Strong Python, React, SQL and Docker candidate.
+
+Ravi Kumar is based in San Francisco, USA.
+Email: ravi@example.com
+Strong Go, Docker and Kubernetes backend engineer.
+
+Meera Shah is based in Mumbai, India.
+Email: meera@example.com
+Strong Python, SQL and pandas analyst.

@@ -1,0 +1,776 @@
+[
+  {
+    "candidate_id": "asha-example-com",
+    "confidence": {
+      "education": 0.0,
+      "emails": 0.9,
+      "experience": 0.75,
+      "full_name": 0.75,
+      "headline": 0.0,
+      "links": 0.75,
+      "location": 0.75,
+      "phones": 0.9,
+      "skills": 0.62,
+      "years_experience": 0.75
+    },
+    "conflicts": {
+      "full_name": [
+        {
+          "chosen": false,
+          "confidence": 0.55,
+          "method": "github_user:name",
+          "source": "github_api",
+          "value": "The Octocat"
+        },
+        {
+          "chosen": true,
+          "confidence": 0.75,
+          "method": "csv_column:name",
+          "source": "recruiter_csv",
+          "value": "Asha Rao"
+        }
+      ],
+      "location": [
+        {
+          "chosen": false,
+          "confidence": 0.4,
+          "method": "github_user:location",
+          "source": "github_api",
+          "value": {
+            "city": "San Francisco",
+            "country": null,
+            "region": null
+          }
+        },
+        {
+          "chosen": true,
+          "confidence": 0.75,
+          "method": "csv_column:location",
+          "source": "recruiter_csv",
+          "value": {
+            "city": "Bengaluru",
+            "country": "IN",
+            "region": null
+          }
+        },
+        {
+          "chosen": true,
+          "confidence": 0.45,
+          "method": "notes:location_phrase",
+          "source": "recruiter_notes",
+          "value": {
+            "city": "Bengaluru",
+            "country": "IN",
+            "region": null
+          }
+        }
+      ]
+    },
+    "education": [],
+    "emails": [
+      "asha@example.com"
+    ],
+    "experience": [
+      {
+        "company": "Eightfold.ai",
+        "end": null,
+        "start": null,
+        "summary": null,
+        "title": "Software Engineering Intern Candidate"
+      }
+    ],
+    "full_name": "Asha Rao",
+    "headline": null,
+    "links": {
+      "github": "https://github.com/octocat",
+      "linkedin": "https://linkedin.com/in/asha-rao",
+      "other": [],
+      "portfolio": "https://asha.dev"
+    },
+    "location": {
+      "city": "Bengaluru",
+      "country": "IN",
+      "region": null
+    },
+    "match_confidence": 0.98,
+    "overall_confidence": 0.62,
+    "phones": [
+      "+919876543210"
+    ],
+    "provenance": [
+      {
+        "confidence": 0.75,
+        "field": "emails",
+        "method": "csv_column:email",
+        "source": "recruiter_csv",
+        "value": "asha@example.com"
+      },
+      {
+        "confidence": 0.8,
+        "field": "emails",
+        "method": "regex:email",
+        "source": "recruiter_notes",
+        "value": "asha@example.com"
+      },
+      {
+        "confidence": 0.75,
+        "field": "experience",
+        "method": "csv_columns:current_company,title",
+        "source": "recruiter_csv",
+        "value": {
+          "company": "Eightfold.ai",
+          "end": null,
+          "start": null,
+          "summary": null,
+          "title": "Software Engineering Intern Candidate"
+        }
+      },
+      {
+        "confidence": 0.55,
+        "field": "full_name",
+        "method": "github_user:name",
+        "source": "github_api",
+        "value": "The Octocat"
+      },
+      {
+        "confidence": 0.75,
+        "field": "full_name",
+        "method": "csv_column:name",
+        "source": "recruiter_csv",
+        "value": "Asha Rao"
+      },
+      {
+        "confidence": 0.95,
+        "field": "identity.github_username",
+        "method": "github_input:username",
+        "source": "github_api",
+        "value": "octocat"
+      },
+      {
+        "confidence": 0.95,
+        "field": "identity.github_username",
+        "method": "csv_column:github_username",
+        "source": "recruiter_csv",
+        "value": "octocat"
+      },
+      {
+        "confidence": 0.55,
+        "field": "links.github",
+        "method": "github_user:html_url",
+        "source": "github_api",
+        "value": "https://github.com/octocat"
+      },
+      {
+        "confidence": 0.75,
+        "field": "links.github",
+        "method": "csv_column:github_url",
+        "source": "recruiter_csv",
+        "value": "https://github.com/octocat"
+      },
+      {
+        "confidence": 0.75,
+        "field": "links.linkedin",
+        "method": "csv_column:linkedin_url",
+        "source": "recruiter_csv",
+        "value": "https://linkedin.com/in/asha-rao"
+      },
+      {
+        "confidence": 0.75,
+        "field": "links.portfolio",
+        "method": "csv_column:portfolio_url",
+        "source": "recruiter_csv",
+        "value": "https://asha.dev"
+      },
+      {
+        "confidence": 0.4,
+        "field": "location",
+        "method": "github_user:location",
+        "source": "github_api",
+        "value": {
+          "city": "San Francisco",
+          "country": null,
+          "region": null
+        }
+      },
+      {
+        "confidence": 0.75,
+        "field": "location",
+        "method": "csv_column:location",
+        "source": "recruiter_csv",
+        "value": {
+          "city": "Bengaluru",
+          "country": "IN",
+          "region": null
+        }
+      },
+      {
+        "confidence": 0.45,
+        "field": "location",
+        "method": "notes:location_phrase",
+        "source": "recruiter_notes",
+        "value": {
+          "city": "Bengaluru",
+          "country": "IN",
+          "region": null
+        }
+      },
+      {
+        "confidence": 0.75,
+        "field": "phones",
+        "method": "csv_column:phone",
+        "source": "recruiter_csv",
+        "value": "+919876543210"
+      },
+      {
+        "confidence": 0.75,
+        "field": "phones",
+        "method": "phonenumbers:phone",
+        "source": "recruiter_notes",
+        "value": "+919876543210"
+      },
+      {
+        "confidence": 0.4,
+        "field": "skills",
+        "method": "github_repo:language_or_text",
+        "source": "github_api",
+        "value": "css"
+      },
+      {
+        "confidence": 0.4,
+        "field": "skills",
+        "method": "github_repo:language_or_text",
+        "source": "github_api",
+        "value": "html"
+      },
+      {
+        "confidence": 0.4,
+        "field": "skills",
+        "method": "github_repo:language_or_text",
+        "source": "github_api",
+        "value": "ruby"
+      },
+      {
+        "confidence": 0.75,
+        "field": "skills",
+        "method": "csv_column:skills",
+        "source": "recruiter_csv",
+        "value": "python"
+      },
+      {
+        "confidence": 0.75,
+        "field": "skills",
+        "method": "csv_column:skills",
+        "source": "recruiter_csv",
+        "value": "react"
+      },
+      {
+        "confidence": 0.75,
+        "field": "skills",
+        "method": "csv_column:skills",
+        "source": "recruiter_csv",
+        "value": "sql"
+      },
+      {
+        "confidence": 0.45,
+        "field": "skills",
+        "method": "notes:skill_parse",
+        "source": "recruiter_notes",
+        "value": "docker"
+      },
+      {
+        "confidence": 0.45,
+        "field": "skills",
+        "method": "notes:skill_parse",
+        "source": "recruiter_notes",
+        "value": "python"
+      },
+      {
+        "confidence": 0.45,
+        "field": "skills",
+        "method": "notes:skill_parse",
+        "source": "recruiter_notes",
+        "value": "react"
+      },
+      {
+        "confidence": 0.45,
+        "field": "skills",
+        "method": "notes:skill_parse",
+        "source": "recruiter_notes",
+        "value": "sql"
+      },
+      {
+        "confidence": 0.75,
+        "field": "years_experience",
+        "method": "csv_column:years_experience",
+        "source": "recruiter_csv",
+        "value": 1.5
+      }
+    ],
+    "skills": [
+      {
+        "confidence": 0.4,
+        "name": "css",
+        "sources": [
+          "github_api"
+        ]
+      },
+      {
+        "confidence": 0.45,
+        "name": "docker",
+        "sources": [
+          "recruiter_notes"
+        ]
+      },
+      {
+        "confidence": 0.4,
+        "name": "html",
+        "sources": [
+          "github_api"
+        ]
+      },
+      {
+        "confidence": 0.9,
+        "name": "python",
+        "sources": [
+          "recruiter_csv",
+          "recruiter_notes"
+        ]
+      },
+      {
+        "confidence": 0.9,
+        "name": "react",
+        "sources": [
+          "recruiter_csv",
+          "recruiter_notes"
+        ]
+      },
+      {
+        "confidence": 0.4,
+        "name": "ruby",
+        "sources": [
+          "github_api"
+        ]
+      },
+      {
+        "confidence": 0.9,
+        "name": "sql",
+        "sources": [
+          "recruiter_csv",
+          "recruiter_notes"
+        ]
+      }
+    ],
+    "years_experience": 1.5
+  },
+  {
+    "candidate_id": "ravi-example-com",
+    "confidence": {
+      "education": 0.0,
+      "emails": 0.9,
+      "experience": 0.75,
+      "full_name": 0.75,
+      "headline": 0.0,
+      "links": 0.75,
+      "location": 0.75,
+      "phones": 0.75,
+      "skills": 0.9,
+      "years_experience": 0.75
+    },
+    "conflicts": {},
+    "education": [],
+    "emails": [
+      "ravi@example.com"
+    ],
+    "experience": [
+      {
+        "company": "CloudWorks",
+        "end": null,
+        "start": null,
+        "summary": null,
+        "title": "Backend Engineer"
+      }
+    ],
+    "full_name": "Ravi Kumar",
+    "headline": null,
+    "links": {
+      "github": "https://github.com/missing-eightfold-user",
+      "linkedin": "https://linkedin.com/in/ravi-kumar",
+      "other": [],
+      "portfolio": "https://ravi.dev"
+    },
+    "location": {
+      "city": "San Francisco",
+      "country": "US",
+      "region": null
+    },
+    "match_confidence": 0.98,
+    "overall_confidence": 0.63,
+    "phones": [
+      "+14155550100"
+    ],
+    "provenance": [
+      {
+        "confidence": 0.75,
+        "field": "emails",
+        "method": "csv_column:email",
+        "source": "recruiter_csv",
+        "value": "ravi@example.com"
+      },
+      {
+        "confidence": 0.8,
+        "field": "emails",
+        "method": "regex:email",
+        "source": "recruiter_notes",
+        "value": "ravi@example.com"
+      },
+      {
+        "confidence": 0.75,
+        "field": "experience",
+        "method": "csv_columns:current_company,title",
+        "source": "recruiter_csv",
+        "value": {
+          "company": "CloudWorks",
+          "end": null,
+          "start": null,
+          "summary": null,
+          "title": "Backend Engineer"
+        }
+      },
+      {
+        "confidence": 0.75,
+        "field": "full_name",
+        "method": "csv_column:name",
+        "source": "recruiter_csv",
+        "value": "Ravi Kumar"
+      },
+      {
+        "confidence": 0.95,
+        "field": "identity.github_username",
+        "method": "csv_column:github_username",
+        "source": "recruiter_csv",
+        "value": "missing-eightfold-user"
+      },
+      {
+        "confidence": 0.75,
+        "field": "links.github",
+        "method": "csv_column:github_url",
+        "source": "recruiter_csv",
+        "value": "https://github.com/missing-eightfold-user"
+      },
+      {
+        "confidence": 0.75,
+        "field": "links.linkedin",
+        "method": "csv_column:linkedin_url",
+        "source": "recruiter_csv",
+        "value": "https://linkedin.com/in/ravi-kumar"
+      },
+      {
+        "confidence": 0.75,
+        "field": "links.portfolio",
+        "method": "csv_column:portfolio_url",
+        "source": "recruiter_csv",
+        "value": "https://ravi.dev"
+      },
+      {
+        "confidence": 0.75,
+        "field": "location",
+        "method": "csv_column:location",
+        "source": "recruiter_csv",
+        "value": {
+          "city": "San Francisco",
+          "country": "US",
+          "region": null
+        }
+      },
+      {
+        "confidence": 0.45,
+        "field": "location",
+        "method": "notes:location_phrase",
+        "source": "recruiter_notes",
+        "value": {
+          "city": "San Francisco",
+          "country": "US",
+          "region": null
+        }
+      },
+      {
+        "confidence": 0.75,
+        "field": "phones",
+        "method": "csv_column:phone",
+        "source": "recruiter_csv",
+        "value": "+14155550100"
+      },
+      {
+        "confidence": 0.75,
+        "field": "skills",
+        "method": "csv_column:skills",
+        "source": "recruiter_csv",
+        "value": "docker"
+      },
+      {
+        "confidence": 0.75,
+        "field": "skills",
+        "method": "csv_column:skills",
+        "source": "recruiter_csv",
+        "value": "go"
+      },
+      {
+        "confidence": 0.75,
+        "field": "skills",
+        "method": "csv_column:skills",
+        "source": "recruiter_csv",
+        "value": "kubernetes"
+      },
+      {
+        "confidence": 0.45,
+        "field": "skills",
+        "method": "notes:skill_parse",
+        "source": "recruiter_notes",
+        "value": "docker"
+      },
+      {
+        "confidence": 0.45,
+        "field": "skills",
+        "method": "notes:skill_parse",
+        "source": "recruiter_notes",
+        "value": "go"
+      },
+      {
+        "confidence": 0.45,
+        "field": "skills",
+        "method": "notes:skill_parse",
+        "source": "recruiter_notes",
+        "value": "kubernetes"
+      },
+      {
+        "confidence": 0.75,
+        "field": "years_experience",
+        "method": "csv_column:years_experience",
+        "source": "recruiter_csv",
+        "value": 4.0
+      }
+    ],
+    "skills": [
+      {
+        "confidence": 0.9,
+        "name": "docker",
+        "sources": [
+          "recruiter_csv",
+          "recruiter_notes"
+        ]
+      },
+      {
+        "confidence": 0.9,
+        "name": "go",
+        "sources": [
+          "recruiter_csv",
+          "recruiter_notes"
+        ]
+      },
+      {
+        "confidence": 0.9,
+        "name": "kubernetes",
+        "sources": [
+          "recruiter_csv",
+          "recruiter_notes"
+        ]
+      }
+    ],
+    "years_experience": 4.0
+  },
+  {
+    "candidate_id": "meera-example-com",
+    "confidence": {
+      "education": 0.0,
+      "emails": 0.9,
+      "experience": 0.75,
+      "full_name": 0.75,
+      "headline": 0.0,
+      "links": 0.75,
+      "location": 0.75,
+      "phones": 0.75,
+      "skills": 0.9,
+      "years_experience": 0.75
+    },
+    "conflicts": {},
+    "education": [],
+    "emails": [
+      "meera@example.com"
+    ],
+    "experience": [
+      {
+        "company": "DataNest",
+        "end": null,
+        "start": null,
+        "summary": null,
+        "title": "Data Analyst"
+      }
+    ],
+    "full_name": "Meera Shah",
+    "headline": null,
+    "links": {
+      "github": null,
+      "linkedin": "https://linkedin.com/in/meera-shah",
+      "other": [],
+      "portfolio": null
+    },
+    "location": {
+      "city": "Mumbai",
+      "country": "IN",
+      "region": null
+    },
+    "match_confidence": 0.98,
+    "overall_confidence": 0.63,
+    "phones": [
+      "+919876543211"
+    ],
+    "provenance": [
+      {
+        "confidence": 0.75,
+        "field": "emails",
+        "method": "csv_column:email",
+        "source": "recruiter_csv",
+        "value": "meera@example.com"
+      },
+      {
+        "confidence": 0.8,
+        "field": "emails",
+        "method": "regex:email",
+        "source": "recruiter_notes",
+        "value": "meera@example.com"
+      },
+      {
+        "confidence": 0.75,
+        "field": "experience",
+        "method": "csv_columns:current_company,title",
+        "source": "recruiter_csv",
+        "value": {
+          "company": "DataNest",
+          "end": null,
+          "start": null,
+          "summary": null,
+          "title": "Data Analyst"
+        }
+      },
+      {
+        "confidence": 0.75,
+        "field": "full_name",
+        "method": "csv_column:name",
+        "source": "recruiter_csv",
+        "value": "Meera Shah"
+      },
+      {
+        "confidence": 0.75,
+        "field": "links.linkedin",
+        "method": "csv_column:linkedin_url",
+        "source": "recruiter_csv",
+        "value": "https://linkedin.com/in/meera-shah"
+      },
+      {
+        "confidence": 0.75,
+        "field": "location",
+        "method": "csv_column:location",
+        "source": "recruiter_csv",
+        "value": {
+          "city": "Mumbai",
+          "country": "IN",
+          "region": null
+        }
+      },
+      {
+        "confidence": 0.45,
+        "field": "location",
+        "method": "notes:location_phrase",
+        "source": "recruiter_notes",
+        "value": {
+          "city": "Mumbai",
+          "country": "IN",
+          "region": null
+        }
+      },
+      {
+        "confidence": 0.75,
+        "field": "phones",
+        "method": "csv_column:phone",
+        "source": "recruiter_csv",
+        "value": "+919876543211"
+      },
+      {
+        "confidence": 0.75,
+        "field": "skills",
+        "method": "csv_column:skills",
+        "source": "recruiter_csv",
+        "value": "pandas"
+      },
+      {
+        "confidence": 0.75,
+        "field": "skills",
+        "method": "csv_column:skills",
+        "source": "recruiter_csv",
+        "value": "python"
+      },
+      {
+        "confidence": 0.75,
+        "field": "skills",
+        "method": "csv_column:skills",
+        "source": "recruiter_csv",
+        "value": "sql"
+      },
+      {
+        "confidence": 0.45,
+        "field": "skills",
+        "method": "notes:skill_parse",
+        "source": "recruiter_notes",
+        "value": "pandas"
+      },
+      {
+        "confidence": 0.45,
+        "field": "skills",
+        "method": "notes:skill_parse",
+        "source": "recruiter_notes",
+        "value": "python"
+      },
+      {
+        "confidence": 0.45,
+        "field": "skills",
+        "method": "notes:skill_parse",
+        "source": "recruiter_notes",
+        "value": "sql"
+      },
+      {
+        "confidence": 0.75,
+        "field": "years_experience",
+        "method": "csv_column:years_experience",
+        "source": "recruiter_csv",
+        "value": 2.0
+      }
+    ],
+    "skills": [
+      {
+        "confidence": 0.9,
+        "name": "pandas",
+        "sources": [
+          "recruiter_csv",
+          "recruiter_notes"
+        ]
+      },
+      {
+        "confidence": 0.9,
+        "name": "python",
+        "sources": [
+          "recruiter_csv",
+          "recruiter_notes"
+        ]
+      },
+      {
+        "confidence": 0.9,
+        "name": "sql",
+        "sources": [
+          "recruiter_csv",
+          "recruiter_notes"
+        ]
+      }
+    ],
+    "years_experience": 2.0
+  }
+]

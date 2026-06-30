@@ -1,0 +1,5 @@
+name,email,phone,current_company,title,location,github_username,linkedin_url,portfolio_url,skills,years_experience,ignored_extra
+Asha Rao,asha@example.com,9876543210,Eightfold.ai,Software Engineering Intern Candidate,"Bengaluru, India",octocat,https://linkedin.com/in/asha-rao,https://asha.dev,"Python; React; SQL",1.5,ignored
+Ravi Kumar,ravi@example.com,+1 415 555 0100,CloudWorks,Backend Engineer,"San Francisco, USA",missing-eightfold-user,https://linkedin.com/in/ravi-kumar,https://ravi.dev,"Go; Docker; Kubernetes",4,ignored
+Meera Shah,meera@example.com,9876543211,DataNest,Data Analyst,"Mumbai, India",,https://linkedin.com/in/meera-shah,,"Python; SQL; pandas",2,ignored
+Asha Rao,asha@example.com,+91 98765 43210,Duplicate Co,Duplicate Row,"Bengaluru, India",octocat,,,,,ignored
