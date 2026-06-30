@@ -19,7 +19,13 @@ app.get("/api/sample", async (_request, response) => {
       readFile(path.join(transformerDir, "sample_inputs", "github_usernames.txt"), "utf8"),
       readFile(path.join(transformerDir, "config.json"), "utf8")
     ]);
-    response.json({ csv, usernames, config: JSON.parse(config) });
+    let notes = "";
+    try {
+      notes = await readFile(path.join(transformerDir, "sample_inputs", "recruiter_notes.txt"), "utf8");
+    } catch {
+      notes = "";
+    }
+    response.json({ csv, usernames, notes, config: JSON.parse(config) });
   } catch (error) {
     response.status(500).json({ error: error.message });
   }
@@ -27,9 +33,9 @@ app.get("/api/sample", async (_request, response) => {
 
 app.post("/api/run", async (request, response) => {
   try {
-    const { csv, usernames, config } = request.body;
-    if (typeof csv !== "string" || typeof usernames !== "string") {
-      return response.status(400).json({ error: "CSV and GitHub usernames must be text." });
+    const { csv, usernames, notes, config } = request.body;
+    if (typeof csv !== "string" || typeof usernames !== "string" || typeof notes !== "string") {
+      return response.status(400).json({ error: "CSV, GitHub usernames, and notes must be text." });
     }
 
     const parsedConfig = typeof config === "string" ? JSON.parse(config) : config;
@@ -38,12 +44,14 @@ app.post("/api/run", async (request, response) => {
 
     const csvPath = path.join(runtimeDir, "candidates.csv");
     const usernamesPath = path.join(runtimeDir, "github_usernames.txt");
+    const notesPath = path.join(runtimeDir, "recruiter_notes.txt");
     const configPath = path.join(runtimeDir, "config.json");
     const outputPath = path.join(runtimeDir, "output.json");
 
     await Promise.all([
       writeFile(csvPath, csv, "utf8"),
       writeFile(usernamesPath, usernames, "utf8"),
+      writeFile(notesPath, notes, "utf8"),
       writeFile(configPath, JSON.stringify(parsedConfig, null, 2), "utf8")
     ]);
 
@@ -54,6 +62,8 @@ app.post("/api/run", async (request, response) => {
       csvPath,
       "--github-usernames",
       usernamesPath,
+      "--notes",
+      notesPath,
       "--config",
       configPath,
       "--output",
