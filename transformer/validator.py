@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import Any
 
 
@@ -55,23 +56,35 @@ def validate_projected(projected: dict[str, Any], config: dict[str, Any]) -> Non
 
     fields = config.get("fields")
     if fields is None:
+        if config.get("include_confidence", True) is False:
+            validate_canonical(_with_placeholder_confidence(projected))
+            return
         validate_canonical(projected)
         return
     requested_targets = []
     if isinstance(fields, list):
         for field in fields:
             if isinstance(field, str):
+                if config.get("include_confidence", True) is False and _is_confidence_field(field, field):
+                    continue
                 requested_targets.append(str(field))
             elif isinstance(field, dict):
+                source_name = str(field.get("from") or field.get("path") or field.get("name"))
+                target_name = str(field.get("path") or field.get("name") or field.get("from"))
+                if config.get("include_confidence", True) is False and _is_confidence_field(source_name, target_name):
+                    continue
                 requested_targets.append(str(field.get("path") or field.get("name") or field.get("from")))
     elif isinstance(fields, dict):
         for source_name, spec in fields.items():
             if isinstance(spec, str):
-                requested_targets.append(spec)
+                target_name = spec
             elif isinstance(spec, dict):
-                requested_targets.append(str(spec.get("rename", source_name)))
+                target_name = str(spec.get("rename", source_name))
             else:
-                requested_targets.append(str(source_name))
+                target_name = str(source_name)
+            if config.get("include_confidence", True) is False and _is_confidence_field(str(source_name), target_name):
+                continue
+            requested_targets.append(target_name)
     if config.get("on_missing", "null") != "omit":
         missing = set(requested_targets) - set(projected)
         if missing:
@@ -147,3 +160,17 @@ def _validate_provenance(value: Any) -> None:
 def _validate_score(value: Any, field: str) -> None:
     if not isinstance(value, (int, float)) or not 0.0 <= float(value) <= 1.0:
         raise ValueError(f"{field} must be a 0.0-1.0 score")
+
+
+def _with_placeholder_confidence(profile: dict[str, Any]) -> dict[str, Any]:
+    canonical = deepcopy(profile)
+    canonical["match_confidence"] = 0.0
+    canonical["overall_confidence"] = 0.0
+    for skill in canonical.get("skills", []):
+        if isinstance(skill, dict):
+            skill.setdefault("confidence", 0.0)
+    return canonical
+
+
+def _is_confidence_field(source_name: str, target_name: str) -> bool:
+    return "confidence" in source_name.lower() or "confidence" in target_name.lower()

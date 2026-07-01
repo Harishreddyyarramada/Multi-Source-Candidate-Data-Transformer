@@ -21,7 +21,7 @@ def project(profile: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
 
     source = dict(profile)
     if not include_confidence:
-        source.pop("confidence", None)
+        source = _strip_confidence_metadata(source)
 
     fields = config.get("fields")
     if fields is None:
@@ -29,6 +29,8 @@ def project(profile: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
 
     output: dict[str, Any] = {}
     for spec in _field_specs(fields):
+        if not include_confidence and _is_confidence_spec(spec):
+            continue
         source_name = spec["from"]
         target_name = spec["path"]
         found, value = _get_path(source, source_name)
@@ -44,6 +46,24 @@ def project(profile: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
         _validate_type(value, spec.get("type"), target_name)
         output[target_name] = value
     return output
+
+
+def _strip_confidence_metadata(value: Any) -> Any:
+    if isinstance(value, list):
+        return [_strip_confidence_metadata(item) for item in value]
+    if isinstance(value, dict):
+        return {
+            key: _strip_confidence_metadata(item)
+            for key, item in value.items()
+            if "confidence" not in str(key).lower()
+        }
+    return value
+
+
+def _is_confidence_spec(spec: dict[str, Any]) -> bool:
+    source_name = str(spec.get("from", "")).lower()
+    target_name = str(spec.get("path", "")).lower()
+    return "confidence" in source_name or "confidence" in target_name
 
 
 def _field_specs(fields: Any) -> list[dict[str, Any]]:

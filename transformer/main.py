@@ -103,7 +103,28 @@ def _load_config(path: Path | None) -> dict[str, Any]:
     config.setdefault("fields", None)
     config.setdefault("include_confidence", True)
     config.setdefault("on_missing", "null")
+    _validate_config(config)
     return config
+
+
+def _validate_config(config: dict[str, Any]) -> None:
+    if not isinstance(config.get("include_confidence"), bool):
+        raise TypeError("Config include_confidence must be true or false")
+    if config.get("on_missing") not in {"null", "omit", "error"}:
+        raise ValueError("Config on_missing must be one of: null, omit, error")
+    fields = config.get("fields")
+    if fields is None:
+        return
+    if not isinstance(fields, (list, dict)):
+        raise TypeError("Config fields must be null, a list, or an object")
+    if isinstance(fields, list):
+        for index, field in enumerate(fields):
+            if isinstance(field, str):
+                continue
+            if not isinstance(field, dict):
+                raise TypeError(f"Config fields[{index}] must be a string or object")
+            if not (field.get("path") or field.get("from") or field.get("name")):
+                raise ValueError(f"Config fields[{index}] must include path, from, or name")
 
 
 if __name__ == "__main__":

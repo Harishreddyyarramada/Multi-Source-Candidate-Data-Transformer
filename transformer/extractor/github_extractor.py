@@ -35,11 +35,23 @@ def detect(usernames_path: str | Path | None) -> bool:
 def read_usernames(path: str | Path) -> list[str]:
     usernames = []
     for line in Path(path).read_text(encoding="utf-8").splitlines():
-        username = line.strip()
+        username = _clean_username(line)
         if username and not username.startswith("#"):
             usernames.append(username)
     # Preserve input order while removing duplicates deterministically.
     return list(dict.fromkeys(usernames))
+
+
+def _clean_username(value: object) -> str:
+    text = str(value).strip()
+    if not text or text.startswith("#"):
+        return text
+    text = text.rstrip("/")
+    if "github.com/" in text:
+        text = text.split("github.com/", 1)[1]
+    elif text.startswith("github.com"):
+        text = text.split("github.com", 1)[1].lstrip("/")
+    return text.lstrip("@").split("/", 1)[0].strip()
 
 
 def extract(usernames_path: str | Path, session: requests.Session | None = None) -> list[ExtractedCandidate]:
@@ -91,7 +103,11 @@ def _get_json(client: requests.Session, url: str) -> Any | None:
     if response.status_code >= 400:
         LOGGER.warning("GitHub request returned %s for %s", response.status_code, url)
         return None
-    return response.json()
+    try:
+        return response.json()
+    except ValueError:
+        LOGGER.warning("GitHub returned non-JSON response for %s", url)
+        return None
 
 
 def _skills_from_repo(repo: dict[str, Any]) -> list[str]:

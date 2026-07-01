@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  Activity,
   ArrowRight,
+  Braces,
   CheckCircle2,
   ClipboardList,
   Code2,
@@ -19,6 +21,7 @@ import {
   RotateCcw,
   ShieldCheck,
   Sparkles,
+  TrendingUp,
   Upload,
   UserRound
 } from "lucide-react";
@@ -54,12 +57,15 @@ export default function App() {
   const [result, setResult] = useState(null);
   const [logs, setLogs] = useState("");
   const [error, setError] = useState("");
+  const [liveStatus, setLiveStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [activeStage, setActiveStage] = useState(-1);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [outputView, setOutputView] = useState("json");
   const [csvMode, setCsvMode] = useState("editor");
   const [uploadedCsvName, setUploadedCsvName] = useState("");
+  const activeRequestRef = useRef(null);
+  const runIdRef = useRef(0);
 
   useEffect(() => {
     fetch("/api/sample")
@@ -79,14 +85,18 @@ export default function App() {
   const selectedProfile = profiles[selectedIndex] || profiles[0] || null;
   const confidence = selectedProfile?.overall_confidence ?? selectedProfile?.score ?? null;
 
-  const configValid = useMemo(() => {
+  const parsedConfig = useMemo(() => {
     try {
-      JSON.parse(configText);
-      return true;
-    } catch {
-      return false;
+      const value = JSON.parse(configText);
+      return {
+        valid: Boolean(value) && typeof value === "object" && !Array.isArray(value),
+        value
+      };
+    } catch (parseError) {
+      return { valid: false, value: null, error: parseError.message };
     }
   }, [configText]);
+  const configValid = parsedConfig.valid;
 
   useEffect(() => {
     if (!loading) return undefined;
@@ -97,34 +107,74 @@ export default function App() {
     return () => window.clearInterval(timer);
   }, [loading]);
 
-  async function runPipeline() {
+  const executePipeline = useCallback(async ({ automatic = false } = {}) => {
+    if (!parsedConfig.valid) return;
+    const runId = runIdRef.current + 1;
+    runIdRef.current = runId;
+    activeRequestRef.current?.abort();
+
+    const controller = new AbortController();
+    activeRequestRef.current = controller;
     setLoading(true);
     setError("");
-    setLogs("");
-    setResult(null);
+    setLiveStatus(automatic ? "Updating output from runtime config..." : "");
+    if (!automatic) {
+      setLogs("");
+      setResult(null);
+    }
     try {
-      const parsedConfig = JSON.parse(configText);
       const response = await fetch("/api/run", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ csv, usernames, notes, config: parsedConfig })
+        body: JSON.stringify({ csv, usernames, notes, config: parsedConfig.value }),
+        signal: controller.signal
       });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || "Pipeline failed.");
+      if (runId !== runIdRef.current) return;
       setResult(payload.output);
       setSelectedIndex(0);
       setLogs(payload.logs);
       setActiveStage(stages.length);
       setOutputView("json");
+      setLiveStatus(automatic ? "Output updated from runtime config." : "");
     } catch (runError) {
+      if (runError.name === "AbortError" || runId !== runIdRef.current) return;
       setError(runError.message);
+      setLiveStatus("");
       setActiveStage(-1);
     } finally {
-      setLoading(false);
+      if (runId === runIdRef.current) {
+        setLoading(false);
+        activeRequestRef.current = null;
+      }
     }
+  }, [csv, notes, parsedConfig, usernames]);
+
+  useEffect(() => {
+    if (!configValid) {
+      setLiveStatus("");
+      return undefined;
+    }
+    const timer = window.setTimeout(() => {
+      executePipeline({ automatic: true });
+    }, 750);
+    return () => window.clearTimeout(timer);
+  }, [configText, configValid, executePipeline]);
+
+  useEffect(() => {
+    return () => {
+      activeRequestRef.current?.abort();
+    };
+  }, []);
+
+  async function runPipeline() {
+    await executePipeline({ automatic: false });
   }
 
   function resetSamples() {
+    activeRequestRef.current?.abort();
+    runIdRef.current += 1;
     setCsv(fallbackCsv);
     setUsernames(fallbackUsernames);
     setNotes(fallbackNotes);
@@ -132,6 +182,8 @@ export default function App() {
     setResult(null);
     setError("");
     setLogs("");
+    setLiveStatus("");
+    setLoading(false);
     setActiveStage(-1);
     setSelectedIndex(0);
     setOutputView("json");
@@ -164,6 +216,16 @@ export default function App() {
           <h1>Candidate Data Transformer</h1>
           <p>Run CSV and GitHub sources through the deterministic canonical profile pipeline.</p>
         </div>
+        <div className="hero-orbit" aria-hidden="true">
+          <span className="orbit-dot orbit-dot-one" />
+          <span className="orbit-dot orbit-dot-two" />
+          <span className="orbit-dot orbit-dot-three" />
+          <div className="hero-orbit-core">
+            <Activity size={28} />
+            <strong>{profiles.length || "Live"}</strong>
+            <small>{profiles.length ? "profiles" : "pipeline"}</small>
+          </div>
+        </div>
         <div className="status-strip" aria-label="Pipeline contract">
           <span><ShieldCheck size={16} /> No invented values</span>
           <span><GitBranch size={16} /> Provenance tracked</span>
@@ -178,6 +240,7 @@ export default function App() {
               <span>{index + 1}</span>
               <strong>{name}</strong>
               <small>{stageStatus(index, activeStage, loading)}</small>
+              <i aria-hidden="true" />
             </article>
             {index < stages.length - 1 && (
               <ArrowRight
@@ -275,7 +338,8 @@ export default function App() {
               Reset
             </button>
           </div>
-          {!configValid && <p className="inline-error">Config JSON is not valid.</p>}
+          {liveStatus && !error && <p className="inline-status">{liveStatus}</p>}
+          {!configValid && <p className="inline-error">Config JSON must be a valid object.</p>}
           {error && <p className="inline-error">{error}</p>}
           {logs && <pre className="logs">{logs}</pre>}
         </div>
@@ -285,9 +349,9 @@ export default function App() {
           {selectedProfile ? (
             <>
               <div className="metric-grid">
-                <Metric label="Unique Profiles from CSV and Github" value={profiles.length} />
-                <Metric label="Confidence" value={confidence === null ? "n/a" : confidence} />
-                <Metric label="Skills" value={profileSkills(selectedProfile).length} />
+                <Metric icon={<UserRound size={17} />} label="Profiles" value={profiles.length} />
+                <Metric icon={<TrendingUp size={17} />} label="Confidence" value={confidence === null ? "n/a" : confidence} />
+                <Metric icon={<Braces size={17} />} label="Skills" value={profileSkills(selectedProfile).length} />
               </div>
               <div className="profile-browser">
                 <aside className="profile-list" aria-label="Unique candidates">
@@ -385,10 +449,10 @@ function PanelTitle({ icon, title }) {
   );
 }
 
-function Metric({ label, value }) {
+function Metric({ icon, label, value }) {
   return (
     <div className="metric">
-      <span>{label}</span>
+      <span>{icon}{label}</span>
       <strong>{value}</strong>
     </div>
   );

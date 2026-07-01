@@ -38,7 +38,17 @@ class NormalizerTests(unittest.TestCase):
         self.assertEqual(normalize_skill(" JS "), "javascript")
         self.assertIn("python", extract_skills_from_text("Python and React developer"))
 
+    def test_skill_aliases_and_typos_deduplicate_to_canonical_name(self):
+        self.assertEqual(normalize_skill("ML"), "machine learning")
+        self.assertEqual(normalize_skill("achiine laenring"), "machine learning")
+        self.assertEqual(normalize_skill("k8s"), "kubernetes")
+        self.assertEqual(normalize_skill("reactjs"), "react")
+        self.assertEqual(normalize_skill("sklearn"), "scikit-learn")
+        self.assertEqual(
+            extract_skills_from_text("Worked on ML, k8s, reactjs and achiine laenring systems"),
+            ["kubernetes", "machine learning", "react"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
-

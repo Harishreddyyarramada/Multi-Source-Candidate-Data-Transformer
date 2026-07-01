@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import re
 from datetime import datetime
+from difflib import SequenceMatcher
 from typing import Any
 
 import phonenumbers
@@ -13,7 +14,9 @@ COMMON_SKILLS = {
     "azure",
     "c",
     "c++",
+    "c#",
     "css",
+    "deep learning",
     "django",
     "docker",
     "fastapi",
@@ -27,17 +30,46 @@ COMMON_SKILLS = {
     "machine learning",
     "mongodb",
     "mysql",
+    "nlp",
     "next.js",
     "node.js",
     "pandas",
     "postgresql",
     "python",
+    "pytorch",
     "react",
     "redis",
     "rust",
+    "scikit-learn",
     "sql",
     "tensorflow",
     "typescript",
+}
+
+SKILL_ALIASES = {
+    "ai/ml": "machine learning",
+    "artificial intelligence": "machine learning",
+    "c sharp": "c#",
+    "c-sharp": "c#",
+    "dl": "deep learning",
+    "genai": "machine learning",
+    "golang": "go",
+    "js": "javascript",
+    "java script": "javascript",
+    "k8s": "kubernetes",
+    "m/l": "machine learning",
+    "machine-learning": "machine learning",
+    "machinelearning": "machine learning",
+    "ml": "machine learning",
+    "natural language processing": "nlp",
+    "node": "node.js",
+    "nodejs": "node.js",
+    "postgres": "postgresql",
+    "py": "python",
+    "react.js": "react",
+    "reactjs": "react",
+    "sklearn": "scikit-learn",
+    "ts": "typescript",
 }
 
 LANGUAGE_TO_SKILL = {
@@ -151,15 +183,9 @@ def normalize_skill(value: Any) -> str | None:
     if value is None:
         return None
     skill = re.sub(r"\s+", " ", str(value).strip().lower())
-    aliases = {
-        "js": "javascript",
-        "node": "node.js",
-        "nodejs": "node.js",
-        "postgres": "postgresql",
-        "py": "python",
-        "ts": "typescript",
-    }
-    skill = aliases.get(skill, skill)
+    skill = SKILL_ALIASES.get(skill, skill)
+    if skill not in COMMON_SKILLS:
+        skill = _closest_known_skill(skill)
     return skill or None
 
 
@@ -167,12 +193,45 @@ def extract_skills_from_text(value: Any) -> list[str]:
     if value is None:
         return []
     text = str(value).lower()
-    found = []
+    found: set[str] = set()
     for skill in sorted(COMMON_SKILLS):
         pattern = r"(?<![\w.+#-])" + re.escape(skill) + r"(?![\w.+#-])"
         if re.search(pattern, text):
-            found.append(skill)
-    return found
+            found.add(skill)
+    for alias, canonical in SKILL_ALIASES.items():
+        pattern = r"(?<![\w.+#-])" + re.escape(alias) + r"(?![\w.+#-])"
+        if re.search(pattern, text):
+            found.add(canonical)
+    for candidate in _candidate_skill_phrases(text):
+        skill = normalize_skill(candidate)
+        if skill in COMMON_SKILLS:
+            found.add(skill)
+    return sorted(found)
+
+
+def _closest_known_skill(skill: str) -> str:
+    """Correct small typos only when a known skill is a close match."""
+
+    if len(skill) < 8:
+        return skill
+    best_skill = skill
+    best_score = 0.0
+    for known in COMMON_SKILLS:
+        score = SequenceMatcher(None, skill, known).ratio()
+        if score > best_score:
+            best_skill = known
+            best_score = score
+    return best_skill if best_score >= 0.8 else skill
+
+
+def _candidate_skill_phrases(text: str) -> list[str]:
+    words = re.findall(r"[a-z][a-z0-9.+#-]*", text)
+    phrases = []
+    max_words = max(len(skill.split()) for skill in COMMON_SKILLS)
+    for size in range(1, max_words + 1):
+        for index in range(0, len(words) - size + 1):
+            phrases.append(" ".join(words[index : index + size]))
+    return phrases
 
 
 def normalize_name(value: Any) -> str | None:

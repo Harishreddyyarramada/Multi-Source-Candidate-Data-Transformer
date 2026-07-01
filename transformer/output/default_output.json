@@ -5,67 +5,15 @@
       "education": 0.0,
       "emails": 0.9,
       "experience": 0.75,
-      "full_name": 0.75,
+      "full_name": 0.9,
       "headline": 0.0,
       "links": 0.75,
       "location": 0.75,
       "phones": 0.9,
-      "skills": 0.62,
+      "skills": 0.79,
       "years_experience": 0.75
     },
-    "conflicts": {
-      "full_name": [
-        {
-          "chosen": false,
-          "confidence": 0.55,
-          "method": "github_user:name",
-          "source": "github_api",
-          "value": "The Octocat"
-        },
-        {
-          "chosen": true,
-          "confidence": 0.75,
-          "method": "csv_column:name",
-          "source": "recruiter_csv",
-          "value": "Asha Rao"
-        }
-      ],
-      "location": [
-        {
-          "chosen": false,
-          "confidence": 0.4,
-          "method": "github_user:location",
-          "source": "github_api",
-          "value": {
-            "city": "San Francisco",
-            "country": null,
-            "region": null
-          }
-        },
-        {
-          "chosen": true,
-          "confidence": 0.75,
-          "method": "csv_column:location",
-          "source": "recruiter_csv",
-          "value": {
-            "city": "Bengaluru",
-            "country": "IN",
-            "region": null
-          }
-        },
-        {
-          "chosen": true,
-          "confidence": 0.45,
-          "method": "notes:location_phrase",
-          "source": "recruiter_notes",
-          "value": {
-            "city": "Bengaluru",
-            "country": "IN",
-            "region": null
-          }
-        }
-      ]
-    },
+    "conflicts": {},
     "education": [],
     "emails": [
       "asha@example.com"
@@ -93,7 +41,7 @@
       "region": null
     },
     "match_confidence": 0.98,
-    "overall_confidence": 0.62,
+    "overall_confidence": 0.65,
     "phones": [
       "+919876543210"
     ],
@@ -126,13 +74,6 @@
         }
       },
       {
-        "confidence": 0.55,
-        "field": "full_name",
-        "method": "github_user:name",
-        "source": "github_api",
-        "value": "The Octocat"
-      },
-      {
         "confidence": 0.75,
         "field": "full_name",
         "method": "csv_column:name",
@@ -140,11 +81,11 @@
         "value": "Asha Rao"
       },
       {
-        "confidence": 0.95,
-        "field": "identity.github_username",
-        "method": "github_input:username",
-        "source": "github_api",
-        "value": "octocat"
+        "confidence": 0.55,
+        "field": "full_name",
+        "method": "notes:first_named_line",
+        "source": "recruiter_notes",
+        "value": "Asha Rao"
       },
       {
         "confidence": 0.95,
@@ -152,13 +93,6 @@
         "method": "csv_column:github_username",
         "source": "recruiter_csv",
         "value": "octocat"
-      },
-      {
-        "confidence": 0.55,
-        "field": "links.github",
-        "method": "github_user:html_url",
-        "source": "github_api",
-        "value": "https://github.com/octocat"
       },
       {
         "confidence": 0.75,
@@ -180,17 +114,6 @@
         "method": "csv_column:portfolio_url",
         "source": "recruiter_csv",
         "value": "https://asha.dev"
-      },
-      {
-        "confidence": 0.4,
-        "field": "location",
-        "method": "github_user:location",
-        "source": "github_api",
-        "value": {
-          "city": "San Francisco",
-          "country": null,
-          "region": null
-        }
       },
       {
         "confidence": 0.75,
@@ -227,27 +150,6 @@
         "method": "phonenumbers:phone",
         "source": "recruiter_notes",
         "value": "+919876543210"
-      },
-      {
-        "confidence": 0.4,
-        "field": "skills",
-        "method": "github_repo:language_or_text",
-        "source": "github_api",
-        "value": "css"
-      },
-      {
-        "confidence": 0.4,
-        "field": "skills",
-        "method": "github_repo:language_or_text",
-        "source": "github_api",
-        "value": "html"
-      },
-      {
-        "confidence": 0.4,
-        "field": "skills",
-        "method": "github_repo:language_or_text",
-        "source": "github_api",
-        "value": "ruby"
       },
       {
         "confidence": 0.75,
@@ -308,24 +210,10 @@
     ],
     "skills": [
       {
-        "confidence": 0.4,
-        "name": "css",
-        "sources": [
-          "github_api"
-        ]
-      },
-      {
         "confidence": 0.45,
         "name": "docker",
         "sources": [
           "recruiter_notes"
-        ]
-      },
-      {
-        "confidence": 0.4,
-        "name": "html",
-        "sources": [
-          "github_api"
         ]
       },
       {
@@ -345,13 +233,6 @@
         ]
       },
       {
-        "confidence": 0.4,
-        "name": "ruby",
-        "sources": [
-          "github_api"
-        ]
-      },
-      {
         "confidence": 0.9,
         "name": "sql",
         "sources": [
@@ -368,7 +249,7 @@
       "education": 0.0,
       "emails": 0.9,
       "experience": 0.75,
-      "full_name": 0.75,
+      "full_name": 0.9,
       "headline": 0.0,
       "links": 0.75,
       "location": 0.75,
@@ -404,7 +285,7 @@
       "region": null
     },
     "match_confidence": 0.98,
-    "overall_confidence": 0.63,
+    "overall_confidence": 0.65,
     "phones": [
       "+14155550100"
     ],
@@ -441,6 +322,13 @@
         "field": "full_name",
         "method": "csv_column:name",
         "source": "recruiter_csv",
+        "value": "Ravi Kumar"
+      },
+      {
+        "confidence": 0.55,
+        "field": "full_name",
+        "method": "notes:first_named_line",
+        "source": "recruiter_notes",
         "value": "Ravi Kumar"
       },
       {
@@ -584,7 +472,7 @@
       "education": 0.0,
       "emails": 0.9,
       "experience": 0.75,
-      "full_name": 0.75,
+      "full_name": 0.9,
       "headline": 0.0,
       "links": 0.75,
       "location": 0.75,
@@ -620,7 +508,7 @@
       "region": null
     },
     "match_confidence": 0.98,
-    "overall_confidence": 0.63,
+    "overall_confidence": 0.65,
     "phones": [
       "+919876543211"
     ],
@@ -657,6 +545,13 @@
         "field": "full_name",
         "method": "csv_column:name",
         "source": "recruiter_csv",
+        "value": "Meera Shah"
+      },
+      {
+        "confidence": 0.55,
+        "field": "full_name",
+        "method": "notes:first_named_line",
+        "source": "recruiter_notes",
         "value": "Meera Shah"
       },
       {

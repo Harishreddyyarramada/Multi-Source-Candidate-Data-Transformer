@@ -1,0 +1,9 @@
+
+> eightfold-transformer-ui@1.0.0 dev
+> concurrently "node server.js" "vite --host 127.0.0.1"
+
+[1] 
+[1]   [32m[1mVITE[22m v6.4.3[39m  [2mready in [0m[1m470[22m[2m[0m ms[22m
+[1] 
+[1]   [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m5173[22m/[39m
+[0] API server running at http://127.0.0.1:5174

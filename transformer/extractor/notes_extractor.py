@@ -68,7 +68,14 @@ def _phones(text: str, default_region: str) -> list[str]:
 
 def _extract_name(text: str) -> str | None:
     for line in text.splitlines():
-        cleaned = normalize_name(re.sub(r"^(name|candidate)\s*:\s*", "", line.strip(), flags=re.I))
+        raw_line = line.strip()
+        sentence_match = re.match(
+            r"^(?:name|candidate)?\s*:?\s*([A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){1,3})\s+(?:is|was|has|with|from|based)\b",
+            raw_line,
+        )
+        if sentence_match:
+            return normalize_name(sentence_match.group(1))
+        cleaned = normalize_name(re.sub(r"^(name|candidate)\s*:\s*", "", raw_line, flags=re.I))
         if not cleaned or "@" in cleaned or len(cleaned.split()) > 5:
             continue
         if re.search(r"\d|https?://", cleaned, flags=re.I):

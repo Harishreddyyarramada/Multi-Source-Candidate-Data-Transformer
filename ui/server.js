@@ -1,6 +1,7 @@
 import express from "express";
 import { execFile } from "node:child_process";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -32,6 +33,7 @@ app.get("/api/sample", async (_request, response) => {
 });
 
 app.post("/api/run", async (request, response) => {
+  let runtimeDir = "";
   try {
     const { csv, usernames, notes, config } = request.body;
     if (typeof csv !== "string" || typeof usernames !== "string" || typeof notes !== "string") {
@@ -39,8 +41,10 @@ app.post("/api/run", async (request, response) => {
     }
 
     const parsedConfig = typeof config === "string" ? JSON.parse(config) : config;
-    const runtimeDir = path.join(transformerDir, "output", "ui_runtime");
-    await mkdir(runtimeDir, { recursive: true });
+    if (!parsedConfig || typeof parsedConfig !== "object" || Array.isArray(parsedConfig)) {
+      return response.status(400).json({ error: "Runtime config must be a JSON object." });
+    }
+    runtimeDir = await mkdtemp(path.join(tmpdir(), "eightfold-ui-runtime-"));
 
     const csvPath = path.join(runtimeDir, "candidates.csv");
     const usernamesPath = path.join(runtimeDir, "github_usernames.txt");
@@ -73,6 +77,10 @@ app.post("/api/run", async (request, response) => {
     response.json({ output, logs: result.stderr || result.stdout || "Pipeline completed." });
   } catch (error) {
     response.status(500).json({ error: error.message });
+  } finally {
+    if (runtimeDir) {
+      await rm(runtimeDir, { recursive: true, force: true });
+    }
   }
 });
 

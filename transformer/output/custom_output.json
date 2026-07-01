@@ -1,28 +1,21 @@
 [
   {
     "id": "asha-example-com",
-    "match_confidence": 0.98,
     "name": "Asha Rao",
     "phone": "+919876543210",
     "primary_email": "asha@example.com",
-    "score": 0.62,
     "skills": [
-      "css",
       "docker",
-      "html",
       "python",
       "react",
-      "ruby",
       "sql"
     ]
   },
   {
     "id": "ravi-example-com",
-    "match_confidence": 0.98,
     "name": "Ravi Kumar",
     "phone": "+14155550100",
     "primary_email": "ravi@example.com",
-    "score": 0.63,
     "skills": [
       "docker",
       "go",
@@ -31,11 +24,9 @@
   },
   {
     "id": "meera-example-com",
-    "match_confidence": 0.98,
     "name": "Meera Shah",
     "phone": "+919876543211",
     "primary_email": "meera@example.com",
-    "score": 0.63,
     "skills": [
       "pandas",
       "python",

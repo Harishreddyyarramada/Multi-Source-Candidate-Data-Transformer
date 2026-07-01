@@ -9,7 +9,7 @@ The project includes:
 - Python transformer pipeline for the main logic
 - React UI for uploading/editing inputs and viewing output
 - Runtime JSON config to change the output shape
-- Tests for normalization, merging, notes parsing, and projection
+- Tests for normalization, merging, notes parsing, GitHub input cleanup, config validation, and projection
 
 ## Features
 
@@ -20,6 +20,8 @@ The project includes:
 - Download selected candidate JSON
 - Track provenance, conflicts, and confidence scores
 - Generate both default and custom-configured output JSON
+- Canonicalize common skill aliases and typos such as `ml`, `machinelearning`, `k8s`, `reactjs`, and `sklearn`
+- Accept GitHub usernames as plain names, `@handles`, or GitHub profile URLs
 
 ## Tech Stack
 
@@ -133,7 +135,7 @@ Simple explanation:
 
 - `Detect`: checks which input files exist
 - `Extract`: reads CSV, GitHub, and notes into a common format
-- `Normalize`: cleans phones, countries, skills, and dates
+- `Normalize`: cleans phones, countries, skills, dates, GitHub handles, and common skill aliases/typos
 - `Merge`: combines duplicate candidates into one profile
 - `Confidence`: scores how trustworthy each value is
 - `Project`: applies the runtime config
@@ -184,6 +186,8 @@ python -m unittest discover -s transformer/tests
 Expected result:
 
 ```text
+Ran 19 tests
+
 OK
 ```
 
@@ -230,6 +234,7 @@ For a quick project demo:
 
 - The transformer never invents unknown values.
 - Missing or bad optional sources should not crash the run.
-- Recruiter notes are parsed conservatively.
+- Recruiter notes are parsed conservatively, including common sentence patterns like `Asha Rao is based in Bengaluru`.
+- Skill typo matching is deliberately limited to close matches against known canonical skills to avoid inventing unknown skills.
 - The UI is only a thin input/output layer. The main logic is in the Python transformer.
 - Temporary UI runtime files are written to `transformer/output/ui_runtime/`.
