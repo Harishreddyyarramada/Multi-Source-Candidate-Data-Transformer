@@ -4,7 +4,7 @@
 
 <p align="center">
 
-<img src="images/homepage.png" alt="Candidate Transformer Home" width="100%"/>
+<img src="images/Home.png" alt="Candidate Transformer Home" width="100%"/>
 
 </p>
 
@@ -88,9 +88,8 @@ https://your-demo-video-link
 - [Sample Output](#-sample-output)
 - [Design Decisions](#-design-decisions)
 - [Assumptions & Edge Cases](#-assumptions--edge-cases)
-- [Future Improvements](#-future-improvements)
 - [Demo Video](#-demo-video)
-- [Author](#-author)
+
 
 ---
 
@@ -1066,33 +1065,14 @@ The transformer is designed to be robust while avoiding incorrect data generatio
 
 The pipeline continues gracefully whenever possible and reports validation errors when required.
 
----
-
-# 🚀 Future Improvements
-
-Some enhancements that can further improve the project include:
-
-- LinkedIn profile integration
-- Resume (PDF/DOCX) parsing
-- OCR support for scanned resumes
-- AI-powered skill extraction
-- ATS JSON import/export
-- Docker support
-- REST API deployment
-- Batch processing for large datasets
-- Advanced duplicate detection using Machine Learning
-- Dashboard analytics for recruiters
-
----
 
 # 📸 Screenshots
 
 ## Home Dashboard
 
-> Replace with your actual screenshot.
 
 ```markdown
-![Home Page](images/homepage.png)
+![Home Page](images/Home.png)
 ```
 
 ---
@@ -1100,7 +1080,7 @@ Some enhancements that can further improve the project include:
 ## Candidate Profile
 
 ```markdown
-![Candidate Profile](images/profile.png)
+![Candidate Profile](images/output.png)
 ```
 
 ---
@@ -1108,7 +1088,7 @@ Some enhancements that can further improve the project include:
 ## Raw JSON Output
 
 ```markdown
-![JSON Output](images/json.png)
+![JSON Output](images/runtimeconfig.png)
 ```
 
 ---
@@ -1132,7 +1112,7 @@ A short demonstration of the project is available below.
 > **Demo Link**
 
 ```
-https://your-demo-video-link
+https://youtu.be/5j4m-YFvsD4?si=PS5xt768pww3VlUx
 ```
 
 ---
@@ -1171,84 +1151,3 @@ Building this project provided experience in:
 - Unit testing and validation
 
 ---
-
-# 🤝 Contributing
-
-Contributions, suggestions, and improvements are always welcome.
-
-If you'd like to improve the project:
-
-1. Fork the repository
-2. Create a feature branch
-
-```bash
-git checkout -b feature/new-feature
-```
-
-3. Commit your changes
-
-```bash
-git commit -m "Add new feature"
-```
-
-4. Push your branch
-
-```bash
-git push origin feature/new-feature
-```
-
-5. Open a Pull Request
-
----
-
-# 📄 License
-
-This project was developed as part of the **Eightfold Engineering Internship Assignment (July – December 2026)**.
-
-You are welcome to use this project for learning and educational purposes.
-
----
-
-# 👨‍💻 Author
-
-## Yarramada Harish Reddy
-
-**B.Tech – Computer Science Engineering (Data Science)**
-
-Passionate about:
-
-- Software Engineering
-- Data Engineering
-- Machine Learning
-- Full Stack Development
-- Cloud Computing
-
----
-
-### 📬 Connect With Me
-
-**GitHub**
-
-```
-https://github.com/your-github-username
-```
-
-**LinkedIn**
-
-```
-https://linkedin.com/in/your-linkedin
-```
-
-**Email**
-
-```
-your-email@example.com
-```
-
----
-
-<p align="center">
-
-⭐ If you found this project useful, consider giving it a star!
-
-</p>
