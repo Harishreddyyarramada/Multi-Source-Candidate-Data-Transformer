@@ -43,14 +43,11 @@ The project includes a **Python transformation engine** and a **React web interf
 
 ## 🎥 Demo
 
-> **Demo Video**
+## 🎥 Demo Video
 
+[![Watch Demo](https://img.youtube.com/vi/5j4m-YFvsD4/maxresdefault.jpg)](https://youtu.be/5j4m-YFvsD4)
 
-## 🎥 Demo
-
-[![Watch Demo](https://img.youtube.com/vi/5j4m-YFvsD4/images/Home.png)](https://youtu.be/5j4m-YFvsD4)
-
----
+> **Click the thumbnail above to watch the complete demo on YouTube.**
 
 ## 📸 Project Preview
 
