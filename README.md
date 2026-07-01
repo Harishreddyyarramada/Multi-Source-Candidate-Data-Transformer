@@ -48,7 +48,7 @@ The project includes a **Python transformation engine** and a **React web interf
 Replace the link below with your recorded demo.
 
 ```
-https://your-demo-video-link
+https://youtu.be/5j4m-YFvsD4?si=PS5xt768pww3VlUx
 ```
 
 ---
@@ -57,15 +57,15 @@ https://your-demo-video-link
 
 ### Home Page
 
-<img src="images/homepage.png" width="100%"/>
+<img src="images/Home.png" width="100%"/>
 
-### Candidate Profile
+### Runtime Configuration
 
-<img src="images/profile.png" width="100%"/>
+<img src="images/runtimeconfig.png" width="100%"/>
 
 ### Raw JSON Output
 
-<img src="images/json.png" width="100%"/>
+<img src="images/output.png" width="100%"/>
 
 ---
 
