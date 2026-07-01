@@ -53,15 +53,15 @@ The project includes a **Python transformation engine** and a **React web interf
 
 ### Home Page
 
-<img src="images/Home.png" width="100%"/>
+<img src="images/Home.png" width="100%" height="45%"/>
 
 ### Runtime Configuration
 
-<img src="images/runtimeconfig.png" width="100%"/>
+<img src="images/runtimeconfig.png" width="100%" height="45%"/>
 
 ### Raw JSON Output
 
-<img src="images/output.png" width="100%"/>
+<img src="images/output.png" width="100%" height="45%"/>
 
 ---
 
